@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍳 MK Master Chef</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Particles -->
+    <div class="bg-particles">
+        <span class="particle" style="left:2%; font-size:30px; animation-duration:22s; animation-delay:0s;">🥕</span>
+        <span class="particle" style="left:10%; font-size:24px; animation-duration:19s; animation-delay:2s;">🍅</span>
+        <span class="particle" style="left:20%; font-size:28px; animation-duration:25s; animation-delay:5s;">🧄</span>
+        <span class="particle" style="left:30%; font-size:22px; animation-duration:21s; animation-delay:1s;">🌶️</span>
+        <span class="particle" style="left:40%; font-size:32px; animation-duration:23s; animation-delay:4s;">🍳</span>
+        <span class="particle" style="left:50%; font-size:26px; animation-duration:20s; animation-delay:6s;">🥘</span>
+        <span class="particle" style="left:60%; font-size:24px; animation-duration:24s; animation-delay:3s;">🧅</span>
+        <span class="particle" style="left:70%; font-size:28px; animation-duration:18s; animation-delay:7s;">🍗</span>
+        <span class="particle" style="left:80%; font-size:22px; animation-duration:26s; animation-delay:2s;">🥦</span>
+        <span class="particle" style="left:90%; font-size:26px; animation-duration:20s; animation-delay:8s;">🧈</span>
+        <span class="particle" style="left:95%; font-size:24px; animation-duration:22s; animation-delay:9s;">🍋</span>
+        <span class="particle" style="left:5%; font-size:20px; animation-duration:28s; animation-delay:10s;">🫒</span>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span id="toastIcon"></span>
+        <span id="toastText"></span>
+    </div>
+
+    <!-- Error Overlay -->
+    <div class="error-overlay" id="errorOverlay">
+        <div class="error-card" id="errorCard">
+            <div class="error-icon-wrap">
+                <div class="error-icon-glow"></div>
+                <div class="error-icon" id="errorIcon">🚫</div>
+            </div>
+            <h2 class="error-title" id="errorTitle">Invalid Ingredients Detected!</h2>
+            <p class="error-subtitle" id="errorSubtitle">These don't look like real food ingredients.<br>Please enter actual cooking ingredients only.</p>
+            <div class="error-items" id="errorItems"></div>
+            <button class="error-close-btn" onclick="closeError()">← Try Again</button>
+        </div>
+    </div>
+
+    <!-- App -->
+    <div class="app-container">
+        <div class="main-card">
+
+            <!-- Header -->
+            <div class="header">
+                <div class="logo-wrap">
+                    <div class="logo-ring"></div>
+                    <div class="logo-ring"></div>
+                    <div class="logo-glow"></div>
+                    <span class="logo-emoji">👨‍🍳</span>
+                </div>
+                <h1 class="app-title">
+                    <span class="title-mk">🍳 MK </span><span class="title-chef">Master Chef</span>
+                </h1>
+                <p class="app-subtitle">AI-Powered<span class="subtitle-dot"></span>Recipe Magic</p>
+            </div>
+
+            <!-- API Key Section -->
+            <div class="api-section">
+                <div class="api-header">
+                    <div class="api-header-left">
+                        <span class="label-text">🔑 API Key</span>
+                    </div>
+                    <div class="api-status disconnected" id="apiStatus">
+                        <div class="status-dot-indicator"></div>
+                        <span id="apiStatusText">Not Connected</span>
+                    </div>
+                </div>
+
+                <div class="api-input-row">
+                    <div class="api-input-wrap">
+                        <input type="password" class="api-key-input" id="apiKeyInput" placeholder="Enter your Groq API key..." autocomplete="off">
+                        <button class="toggle-visibility" id="toggleVisibility" onclick="toggleKeyVisibility()">👁️</button>
+                    </div>
+                    <button class="save-key-btn" id="saveKeyBtn" onclick="saveApiKey()">
+                        <span id="saveIcon">💾</span>
+                        <span id="saveText">Save</span>
+                    </button>
+                </div>
+
+                <div class="api-actions">
+                    <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" class="create-key-btn">
+                        <span>🔗</span> Create API Key
+                    </a>
+                    <button class="remove-key-btn" id="removeKeyBtn" onclick="removeApiKey()">
+                        <span>🗑️</span> Remove
+                    </button>
+                </div>
+
+                <div class="api-hint">
+                    <span>🔒</span> Your key is stored locally in your browser only. Never shared.
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- 10 INGREDIENTS -->
+            <div class="section-label">
+                <span>🧾 Your Ingredients</span>
+                <div class="line"></div>
+                <span class="ingredient-count" id="ingredientCounter">0 / 10</span>
+            </div>
+
+            <div class="inputs-section" id="inputsSection">
+                <div class="input-group">
+                    <span class="input-icon">🥩</span>
+                    <input type="text" class="ingredient-input" id="ingredient1" placeholder="Chicken, Beef..." autocomplete="off">
+                    <div class="input-number">1</div>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🐟</span>
+                    <input type="text" class="ingredient-input" id="ingredient2" placeholder="Salmon, Shrimp..." autocomplete="off">
+                    <div class="input-number">2</div>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🥬</span>
+                    <input type="text" class="ingredient-input" id="ingredient3" placeholder="Spinach, Kale..." autocomplete="off">
+                    <div class="input-number">3</div>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🥕</span>
+                    <input type="text" class="ingredient-input" id="ingredient4" placeholder="Carrot, Potato..." autocomplete="off">
+                    <div class="input-number">4</div>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🧅</span>
+                    <input type="text" class="ingredient-input" id="ingredient5" placeholder="Onion, Garlic..." autocomplete="off">
+                    <div class="input-number">5</div>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🍅</span>
+                    <input type="text" class="ingredient-input" id="ingredient6" placeholder="Tomato, Pepper..." autocomplete="off">
+                    <div class="input-number">6</div>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🧂</span>
+                    <input type="text" class="ingredient-input" id="ingredient7" placeholder="Salt, Pepper, Cumin..." autocomplete="off">
+                    <div class="input-number">7</div>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🌿</span>
+                    <input type="text" class="ingredient-input" id="ingredient8" placeholder="Basil, Thyme..." autocomplete="off">
+                    <div class="input-number">8</div>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🫒</span>
+                    <input type="text" class="ingredient-input" id="ingredient9" placeholder="Olive Oil, Butter..." autocomplete="off">
+                    <div class="input-number">9</div>
+                </div>
+                <div class="input-group">
+                    <span class="input-icon">🧀</span>
+                    <input type="text" class="ingredient-input" id="ingredient10" placeholder="Cheese, Cream..." autocomplete="off">
+                    <div class="input-number">10</div>
+                </div>
+            </div>
+
+            <!-- Cook Button -->
+            <button class="cook-btn" id="cookBtn" onclick="cookMagic()">
+                <div class="btn-content">
+                    <span class="spinner"></span>
+                    <span class="btn-label">✨ Cook Magic ✨</span>
+                    <span class="loading-text">AI is thinking...</span>
+                </div>
+            </button>
+
+            <!-- Response -->
+            <div class="response-section" id="responseSection">
+                <div class="response-card">
+                    <div class="response-header">
+                        <div class="response-icon-box">🍽️</div>
+                        <div class="response-header-info">
+                            <h3>Chef's Recipe</h3>
+                            <span>Crafted by AI • Just for you</span>
+                        </div>
+                    </div>
+                    <div class="response-body" id="responseBody"></div>
+                </div>
+            </div>
+
+            <div class="status-bar">
+                <div class="status-dot"></div>
+                <span>Powered by Groq AI ⚡</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
